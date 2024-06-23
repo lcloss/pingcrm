@@ -3,13 +3,19 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 
 abstract class TestCase extends BaseTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
+    // PHP Unit version
+//    protected function setUp(): void
+//    {
+//        parent::setUp();
+//
+//        $this->withoutVite();
+//    }
 
-        $this->withoutVite();
-    }
+    // Pest version
+//    use CreatesApplication;   -- Old version?
+    use LazilyRefreshDatabase;
 }
