@@ -35,6 +35,34 @@ it('can view contacts', function () {
         );
 });
 
+it('can view contacts rewritted', function () {
+    $response = login()
+        ->get('/contacts');
+
+    expect($response)
+        ->toContain('contacts.data', 2)
+
+        ->toContain('contacts.data.0', fn (Assert $assert) => $assert
+            ->has('id')
+            ->where('name', 'Martin Abbott')
+            ->where('phone', '555-111-2222')
+            ->where('city', 'Murphyland')
+            ->where('deleted_at', null)
+            ->has('organization', fn (Assert $assert) => $assert
+                ->where('name', 'Example Organization Inc.')
+            ))
+
+        ->toContain('contacts.data.1', fn (Assert $assert) => $assert
+            ->has('id')
+            ->where('name', 'Lynn Kub')
+            ->where('phone', '555-333-4444')
+            ->where('city', 'Woodstock')
+            ->where('deleted_at', null)
+            ->has('organization', fn (Assert $assert) => $assert
+                ->where('name', 'Example Organization Inc.')
+            ));
+});
+
 it('can search for contacts', function () {
     login()
         ->get('/contacts?search=Martin')

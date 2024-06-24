@@ -2,8 +2,9 @@
 
 todo('it can view dashboard');
 
-test('example', function () {
-    $response = $this->get('/dashboard');
+test('it requires authentication', function () {
+    $response = $this->get('/');
 
-    $response->assertStatus(200);
+    $response->assertStatus(302)
+        ->assertRedirect('/login');
 });

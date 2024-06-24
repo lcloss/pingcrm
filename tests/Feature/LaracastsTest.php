@@ -12,6 +12,8 @@ it('can validate email', function () {
 
 it('throws an exception if the value is not a string', function () {
     $rule = new IsValidEmailAddress();
-});
+
+    expect($rule->passes('email', 123))->toBeFalse();
+})->throws(Error::class, 'The value must be a string');
 
 it('has better regex support and catch more email addresses');

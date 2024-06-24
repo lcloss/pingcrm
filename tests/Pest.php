@@ -13,7 +13,10 @@
 
 use App\Models\Account;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Testing\TestResponse;
+use Inertia\Testing\AssertableInertia;
 use PHPUnit\Framework\ExpectationFailedException;
 
 uses(
@@ -42,6 +45,14 @@ expect()->extend('toBePhoneNumber', function () {
     if (! is_numeric(Str::of($this->value)->after('+')->remove([' ', '-'])->__toString())) {
         throw new ExpectationFailedException('Phone numbers must contain only numeric characters.');
     }
+});
+
+expect()->intercept('toBe', Model::class, function ($model) {
+    expect($this->value->is($model))->toBeTrue(message: 'Failed asserting that two models reference the same object.');
+});
+
+expect()->intercept('toContain', TestResponse::class, function (...$value) {
+    $this->value->assertInertia(fn (AssertableInertia $inertia) => $inertia->has(...$value));
 });
 
 /*
